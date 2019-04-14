@@ -5,11 +5,8 @@
 </template>
 
 <script>
+  import '@/sass/app.scss'
   export default {
     name: 'kc3-beholder'
   }
 </script>
-
-<style>
-  /* CSS */
-</style>

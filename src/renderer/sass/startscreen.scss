@@ -1,0 +1,46 @@
+.startscreen {
+  display: flex;
+  height: 100%;
+
+  &--menu {
+    margin: auto;
+    padding: 20px 50px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.85);
+
+    > div {
+      margin: 5px;
+    }
+  }
+
+  &--center {
+    text-align: center;
+  }
+
+  &--flex {
+    display: flex;
+
+    :first-child {
+      width: 120px;
+      padding: 2px 5px;
+    }
+
+    > input {
+      padding: 2px 5px;
+    }
+  }
+
+  &--connect {
+    border: solid black 1px;
+    box-shadow: #000 1px 1px 2px;
+    background: #8fc383;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-block;
+
+    &:hover {
+      background: #7fc34e;
+    }
+  }
+}

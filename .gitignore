@@ -9,3 +9,7 @@ npm-debug.log
 npm-debug.log.*
 thumbs.db
 !.gitkeep
+
+# use npm run to generate those
+.env
+src/renderer/generated/*.js

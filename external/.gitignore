@@ -1,0 +1,7 @@
+# this folder contains downloaded WCTF files.
+# for more info, check https://github.com/TeamFleet/WhoCallsTheFleet app-db folder
+#
+# run "npm run generateData" to download files from github
+*.nedb
+.versions.json
+*.json

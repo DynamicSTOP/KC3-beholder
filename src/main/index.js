@@ -1,6 +1,9 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
+
+const { fork } = require('child_process')
+const path = require('path')
 
 /**
  * Set `__static` path to static files in production
@@ -15,17 +18,46 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+let kcpipe
+
+function createKCPipe (data = null) {
+  kcpipe = fork(path.join(__dirname, 'forks', 'kcpipe.js'))
+  kcpipe.on('message', (m) => {
+    if (data !== null && m.type === 'ForkStarted') {
+      kcpipe.send({type: 'connectToChrome', data})
+    } else if (m.type === 'ConnectedToChrome') {
+      mainWindow.send('ConnectedToChrome', m)
+    } else if (['ReceivedTextMessage'].indexOf(m.type) !== -1 && mainWindow) {
+      mainWindow.send('NewNetworkMessage', m)
+    } else if (m.type !== 'ReceivedNonTextMessage') {
+      console.log('PARENT got message:', m)
+    }
+  })
+}
+
+ipcMain.on('connectToChrome', (event, data) => {
+  if (kcpipe == null) {
+    createKCPipe(data)
+  }
+})
+
 function createWindow () {
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 942,
     useContentSize: true,
-    width: 1000
+    width: 1300
   })
 
   mainWindow.loadURL(winURL)
+
+  mainWindow.on('message', (message) => {
+    if (message.type === 'start_kcpipe') {
+      createKCPipe()
+    }
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null

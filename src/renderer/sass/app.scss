@@ -1,0 +1,32 @@
+html, body, #app {
+  height: 100%;
+}
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  //background: url(https://cdn.awwni.me/u875.jpg) no-repeat;
+  background: url(https://pbs.twimg.com/media/D2_DhC6U4AEvMai.jpg) no-repeat;
+  background-size: cover;
+  //position:relative;
+  //&:before{
+  //  position:absolute;
+  //  background: rgba(0, 0, 0, 0.1);
+  //  content:" ";
+  //  top:0;
+  //  left:0;
+  //  bottom:0;
+  //  right:0;
+  //}
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+@import "startscreen";
+@import "kc3panel";

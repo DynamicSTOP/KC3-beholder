@@ -1,0 +1,4 @@
+# turn on\off logging into NetworkParser
+# requests will lend here
+!.gitignore
+*

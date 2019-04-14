@@ -22,12 +22,23 @@ function logStats (proc, data) {
 
   log += chalk.yellow.bold(`┏ ${proc} Process ${new Array((19 - proc.length) + 1).join('-')}`)
   log += '\n\n'
-
+  let images = false
   if (typeof data === 'object') {
     data.toString({
       colors: true,
       chunks: false
     }).split(/\r?\n/).forEach(line => {
+
+      /* this line suppress out of img assets... since there is too many of those */
+      if (proc === 'Renderer' && JSON.stringify(line).match(/^"\s*\\u001b\[1m\\u001b\[32mimgs\/\d+(_d)?--ships\.png/)){
+        if(!images){
+          log += '  ' + line + '\n'
+          log += '       ... suppressed rows check dev-runner.js ...\n'
+          images = true
+        }
+        return
+      }
+
       log += '  ' + line + '\n'
     })
   } else {
@@ -70,6 +81,13 @@ function startRenderer () {
           ctx.middleware.waitUntilValid(() => {
             resolve()
           })
+        },
+        proxy: {
+          '/background.js': {
+            secure:false,
+            changeOrigin: true,
+            target: 'http://localhost:9080/src/background/'
+          }
         }
       }
     )
@@ -163,7 +181,7 @@ function startElectron () {
   }
 
   electronProcess = spawn(electron, args)
-  
+
   electronProcess.stdout.on('data', data => {
     electronLog(data, 'blue')
   })

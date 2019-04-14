@@ -10,7 +10,7 @@ const BabiliWebpackPlugin = require('babili-webpack-plugin')
 
 let backgroundConfig = {
   entry: {
-    background: path.join(__dirname, '../src/background/kccdp.js')
+    background: path.join(__dirname, '../src/background/background.js')
   },
   externals: [
     ...Object.keys(dependencies || {})
@@ -53,7 +53,8 @@ let backgroundConfig = {
     new webpack.NoEmitOnErrorsPlugin()
   ],
   resolve: {
-    extensions: ['.js', '.json', '.node']
+    extensions: ['.js', '.json', '.node'],
+    modules: [path.join(__dirname, '../node_modules')]
   },
   // "web" | "webworker" | "node" | "async-node" | "node-webkit" | "electron-main" | "electron-renderer" | function
   target: 'webworker'
@@ -65,7 +66,8 @@ let backgroundConfig = {
 if (process.env.NODE_ENV !== 'production') {
   backgroundConfig.plugins.push(
     new webpack.DefinePlugin({
-      '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
+      '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`,
+      'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`
     })
   )
 }

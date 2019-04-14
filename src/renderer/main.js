@@ -16,14 +16,3 @@ new Vue({
   store,
   template: '<App/>'
 }).$mount('#app')
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register(process.env.NODE_ENV === 'production' ? '/background.js' : '/src/background/kccdp.js')
-    .then(function (reg) {
-      // registration worked
-      console.log('Registration succeeded. Scope is ' + reg.scope)
-    }).catch(function (error) {
-      // registration failed
-      console.log('Registration failed with ' + error)
-    })
-}

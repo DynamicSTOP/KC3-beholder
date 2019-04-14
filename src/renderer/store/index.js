@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { createPersistedState, createSharedMutations } from 'vuex-electron'
-
 import modules from './modules'
+import networkParser from './NetworkParser'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules,
-  plugins: [
-    createPersistedState(),
-    createSharedMutations()
-  ],
   strict: process.env.NODE_ENV !== 'production'
 })
+
+require('electron').ipcRenderer.on('NewNetworkMessage', (event, message) => {
+  networkParser.parse(store, message)
+})
+
+export default store
