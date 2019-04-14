@@ -357,6 +357,15 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    &.gs {
+      box-shadow: 0 0 2px 2px #5BFF58;
+    }
+
+    &.fail {
+      box-shadow: 0 0 2px 2px #ff2a37;
+    }
+
   }
 
   &--info_name {

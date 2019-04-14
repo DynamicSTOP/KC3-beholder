@@ -2,10 +2,8 @@
     <div class="fleet_panel">
         <div class="fleet_panel--fleet_selector">
             <div>1+2</div>
-            <div class="selected">1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
+            <div v-for="(n,i) in 4" :class="{selected:i===uiCurrentFleet}"
+                 @click="switchCurrentFleet(i)" :key="'fs_'+i">{{n}}</div>
         </div>
         <div class="fleet_panel--fleet_ships">
             <fleet-ship v-for="(ship, index) in ships"
@@ -28,6 +26,11 @@
         return this.deckShipIds(this.uiCurrentFleet)
       }
     },
-    components: {FleetShip}
+    components: {FleetShip},
+    methods: {
+      switchCurrentFleet (fleetId) {
+        this.$store.dispatch('UI_SWITCH_FLEET', fleetId)
+      }
+    }
   }
 </script>

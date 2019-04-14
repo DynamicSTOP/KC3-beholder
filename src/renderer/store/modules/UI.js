@@ -24,6 +24,10 @@ const mutations = {
   UI_SWITCH_PANEL (state, tabName) {
     state.uiCurrentPanel = tabName
     saveToLocalStorage()
+  },
+  UI_SWITCH_FLEET (state, fleetId) {
+    state.uiCurrentFleet = fleetId
+    saveToLocalStorage()
   }
 }
 
@@ -33,6 +37,9 @@ const actions = {
   },
   UI_SWITCH_PANEL (context, tabName) {
     context.commit('UI_SWITCH_PANEL', tabName)
+  },
+  UI_SWITCH_FLEET (context, fleetId) {
+    context.commit('UI_SWITCH_FLEET', fleetId)
   }
 }
 

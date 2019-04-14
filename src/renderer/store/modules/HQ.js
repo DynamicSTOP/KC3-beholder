@@ -235,7 +235,19 @@ const getters = {
   shipFuel: state => shipId => getters.shipData(state)(shipId).api_fuel,
   shipAmmo: state => shipId => getters.shipData(state)(shipId).api_bull,
   shipMaxFuel: state => shipId => getters.shipMaster(state)(shipId).consum.fuel,
-  shipMaxAmmo: state => shipId => getters.shipMaster(state)(shipId).consum.ammo
+  shipMaxAmmo: state => shipId => getters.shipMaster(state)(shipId).consum.ammo,
+  shipExpReady: state => shipId => {
+    if (getters.shipFuel(state)(shipId) !== getters.shipMaxFuel(state)(shipId) ||
+      getters.shipAmmo(state)(shipId) !== getters.shipMaxAmmo(state)(shipId) ||
+      getters.shipMorale(state)(shipId) < 40
+    ) {
+      return -1
+    }
+    if (getters.shipMorale(state)(shipId) > 49) {
+      return 1
+    }
+    return 0
+  }
 }
 
 export default {
