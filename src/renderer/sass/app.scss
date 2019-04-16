@@ -9,53 +9,6 @@ html, body, #app {
   padding: 0;
 }
 
-
-
-@-webkit-keyframes test {
-  0% {
-    background: url(https://cdn.awwni.me/u875.jpg) no-repeat;
-    background-size: cover;
-  }
-  32.99%{
-    background: url(https://cdn.awwni.me/u875.jpg) no-repeat;
-    background-size: cover;
-  }
-  33% {
-    background: url(https://pbs.twimg.com/media/D2_DhC6U4AEvMai.jpg) no-repeat;
-    background-size: cover;
-  }
-  65.99%{
-    background: url(https://pbs.twimg.com/media/D2_DhC6U4AEvMai.jpg) no-repeat;
-    background-size: cover;
-  }
-  66%{
-    background: url(https://pbs.twimg.com/media/D4HMLpGUEAAFdEG.jpg) no-repeat;
-    background-size: cover;
-  }
-  100% {
-    background: url(https://pbs.twimg.com/media/D4HMLpGUEAAFdEG.jpg) no-repeat;
-    background-size: cover;
-  }
-}
-html {
-  background-size: cover;
-  animation-name: test;
-  animation-duration: 60s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-direction: alternate;
-  //position:relative;
-  //&:before{
-  //  position:absolute;
-  //  background: rgba(0, 0, 0, 0.1);
-  //  content:" ";
-  //  top:0;
-  //  left:0;
-  //  bottom:0;
-  //  right:0;
-  //}
-}
-
 body {
   font-family: 'Roboto', sans-serif;
 }
