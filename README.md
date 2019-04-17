@@ -20,13 +20,15 @@ This project was generated with [electron-vue](https://github.com/SimulatedGREG/
 #### Build Setup
 
 ``` bash
-# install dependencies
+# 1. install dependencies
 npm install
 
-# (re)generate data
+# 2. create .env (use .env.example)
+
+# 3. (re)generate data
 npm run generateData
 
-# serve with hot reload at localhost:9080
+# 4. serve with hot reload at localhost:9080
 npm run dev
 
 # build electron application for production
