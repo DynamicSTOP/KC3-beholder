@@ -9,7 +9,7 @@
 
   const images = [
     'https://cdn.awwni.me/u875.jpg',
-    'https://pbs.twimg.com/media/D2_DhC6U4AEvMai.jpg',
+    'https://pbs.twimg.com/media/D4HMLpGUEAAFdEG.jpg',
     'https://pbs.twimg.com/media/D2_DhC6U4AEvMai.jpg',
     'https://pbs.twimg.com/media/D4MJZSOXsAA34ag.jpg'
   ]

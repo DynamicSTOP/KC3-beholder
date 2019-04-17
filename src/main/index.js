@@ -1,8 +1,12 @@
 'use strict'
 
-import { app, BrowserWindow, ipcMain } from 'electron'
+import {app, BrowserWindow, ipcMain} from 'electron'
+import DRP from './dcrp'
+import {URLSearchParams} from 'url'
 
-const { fork } = require('child_process')
+global.URLSearchParams = URLSearchParams
+
+const {fork} = require('child_process')
 const path = require('path')
 
 /**
@@ -27,6 +31,7 @@ function createKCPipe (data = null) {
       kcpipe.send({type: 'connectToChrome', data})
     } else if (m.type === 'ConnectedToChrome') {
       mainWindow.send('ConnectedToChrome', m)
+      DRP.start()
     } else if (['ReceivedTextMessage'].indexOf(m.type) !== -1 && mainWindow) {
       mainWindow.send('NewNetworkMessage', m)
     } else if (m.type !== 'ReceivedNonTextMessage') {
