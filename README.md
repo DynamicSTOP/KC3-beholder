@@ -10,6 +10,7 @@
 [VueJs](https://vuejs.org/)  
 [KC3](https://github.com/KC3Kai/KC3Kai) - base idea, icons  
 [WhoCallsTheFleet](https://github.com/TeamFleet/WhoCallsTheFleet) - ship\gears data  
+[SVGRepo](https://www.svgrepo.com/) svg icons  
 [Figma](https://www.figma.com/file/gP6XStywHgz0uR1mQ10lGPFP/kc3-panel?node-id=0%3A1) mock-up  
 [Trello](https://trello.com/b/wBuV47Ki/kc-panel) ideas board
   
