@@ -43,3 +43,11 @@ npm test
 npm run lint
 
 ```
+
+Current versions connects to existing chrome process with running game.
+In order to do so you will need to start chrome with such flag `--remote-debugging-port=9222`.
+
+A little bit more advanced situation:  
+Yes, it can connect to chrome even on different pc, but you will have to also add `--remote-debugging-address` (which i haven't tested and it might not work).
+Alternatively you can make a tunnel with ssh or putty ~~or even redirect incoming connections to chrome port~~.  
+**Keep in mind that redirecting ports without any security knowledge in that area is equal to just placing your pc with running chrome in public. DO NOT! NOT! DO NOT LET THAT PORT BE OPEN TO INTERNET!!!**. Chrome listens to localhost for a reason. And this reason called **security**. You've been warned.
