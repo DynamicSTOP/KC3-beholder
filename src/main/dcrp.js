@@ -40,16 +40,14 @@ class DiscrodRichPresence {
   }
 
   async update () {
-    console.log(`DRP update`)
     try {
-      const setAct = await this.client.setActivity({
+      await this.client.setActivity({
         details: `is he in KC3K2?`,
         state: `chilling in port`,
         largeImageKey: '10cm',
         instance: false,
         startTimestamp: this.startTimestamp
       })
-      console.log(`RESPONSE`, setAct)
     } catch (e) {
       console.log(e)
     }

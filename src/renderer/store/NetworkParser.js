@@ -1,4 +1,4 @@
-const logToDisk = true
+const debug = true
 const networkParser = {
   parse (store, message) {
     const url = message.data.url
@@ -6,10 +6,9 @@ const networkParser = {
     if (match === null) {
       return console.error('ERROR MATCHING URL ' + url + ' ' + JSON.stringify(message))
     }
-    if (logToDisk) {
-      require('fs').writeFileSync(require('path').join(__dirname, '..', '..', '..', 'tmp', match[1].substring(1).replace(/\//g, '-') + '.json'), JSON.stringify(message, false, ' '), {encoding: 'utf8'})
+    if (debug) {
+      console.log(match[1], message)
     }
-    console.log(match[1], message)
     switch (match[1]) {
       case '/kcsapi/api_get_member/questlist':
         // runs on quest list open

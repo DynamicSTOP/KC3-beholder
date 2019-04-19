@@ -2,19 +2,20 @@
 
 import {app, BrowserWindow, ipcMain} from 'electron'
 import DRP from './dcrp'
+import chromePipe from './ChromePipe'
 import {URLSearchParams} from 'url'
 
-global.URLSearchParams = URLSearchParams
-
-const {fork} = require('child_process')
+const fs = require('fs')
 const path = require('path')
+// for old node < 10
+global.URLSearchParams = URLSearchParams
 
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow
@@ -22,28 +23,31 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-let kcpipe
+chromePipe.on('ConnectedToChrome', (m) => {
+  if (mainWindow) {
+    mainWindow.send('ConnectedToChrome', m)
+  }
+  DRP.start()
+})
 
-function createKCPipe (data = null) {
-  kcpipe = fork(path.join(__dirname, 'forks', 'kcpipe.js'))
-  kcpipe.on('message', (m) => {
-    if (data !== null && m.type === 'ForkStarted') {
-      kcpipe.send({type: 'connectToChrome', data})
-    } else if (m.type === 'ConnectedToChrome') {
-      mainWindow.send('ConnectedToChrome', m)
-      DRP.start()
-    } else if (['ReceivedTextMessage'].indexOf(m.type) !== -1 && mainWindow) {
-      mainWindow.send('NewNetworkMessage', m)
-    } else if (m.type !== 'ReceivedNonTextMessage') {
-      console.log('PARENT got message:', m)
+chromePipe.on('ReceivedTextMessage', (message) => {
+  if (mainWindow) {
+    mainWindow.send('NewNetworkMessage', message)
+    if (process.env.NODE_ENV === 'development') {
+      const url = message.data.url
+      const match = url.match(/https?:\/\/[^/]*(.*)/)
+      if (match === null) {
+        return console.error('ERROR MATCHING URL ' + url + ' ' + JSON.stringify(message))
+      }
+      fs.writeFileSync(path.join(__dirname, '..', 'tmp',
+        match[1].substring(1).replace(/\//g, '-') + '.json'),
+        JSON.stringify(message, false, ' '), {encoding: 'utf8'})
     }
-  })
-}
+  }
+})
 
 ipcMain.on('connectToChrome', (event, data) => {
-  if (kcpipe == null) {
-    createKCPipe(data)
-  }
+  chromePipe.connectToChrome(data)
 })
 
 function createWindow () {
@@ -60,7 +64,7 @@ function createWindow () {
 
   mainWindow.on('message', (message) => {
     if (message.type === 'start_kcpipe') {
-      createKCPipe()
+      chromePipe.connectToChrome()
     }
   })
 

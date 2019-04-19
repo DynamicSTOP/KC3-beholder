@@ -1,34 +1,38 @@
 const CDP = require('chrome-remote-interface')
+const EventEmitter = require('events')
 const debug = process.env.NODE_ENV !== 'production'
 
-class KCPipe {
+class ChromePipe extends EventEmitter {
   constructor () {
+    super()
     this.debugOutput = false
     this.pollingGameFrame = false
     this.clientGameFrame = null
-    this.host = '192.168.1.115'
-    this.port = '9334'
+    this.host = 'localhost'
+    this.port = '9222'
     this.Requests = {}
+  }
 
-    process.on('message', (m) => {
-      console.log('CHILD got message:', m)
-      if (m.type === 'connectToChrome') {
-        this.port = m.data.port
-        this.host = m.data.host
-        if (this.clientGameFrame !== null) {
-          if (this.port !== m.data.port || this.host !== m.data.host){
-            this.clientGameFrame.off('disconnect')
-            this.clientGameFrame.disconnect()
-            this.clientGameFrame = null
-          } else {
-            process.send({ type: 'ConnectedToChrome'})
-          }
-        }
-        this.attachToGameFrame()
+  async connectToChrome (data = {}) {
+    const oldHost = this.host
+    const oldPort = this.port
+
+    if (data.port && data.host) {
+      this.port = data.port
+      this.host = data.host
+    }
+
+    if (this.clientGameFrame !== null) {
+      if (this.port !== oldPort || this.host !== oldHost) {
+        this.clientGameFrame.off('disconnect')
+        this.clientGameFrame.disconnect()
+        this.clientGameFrame = null
+      } else {
+        return this.emit('ConnectedToChrome')
       }
-    })
+    }
 
-    process.send({ type: 'ForkStarted'})
+    this.attachToGameFrame()
   }
 
   async attachToGameFrame () {
@@ -39,7 +43,7 @@ class KCPipe {
       if (!(await this.connectToGameFrame())) {
         setTimeout(this.attachToGameFrame().bind(this), 3000)
       } else {
-        process.send({ type: 'ConnectedToChrome'})
+        this.emit('ConnectedToChrome')
       }
     } catch (Error) {
       if (debug && Error && ['ECONNRESET', 'ECONNREFUSED'].indexOf(Error.code) === -1) {
@@ -131,8 +135,8 @@ class KCPipe {
     this.Requests[params.requestId].mimeType = params.response.mimeType
     if (params.response.mimeType.indexOf('text') === -1) {
       if (this.debugOutput) console.log(`::SendingEvent:ReceivedNonTextMessage: \t${JSON.stringify(this.Requests[params.requestId])}`)
-      process.send({ type: 'ReceivedNonTextMessage',data:this.Requests[params.requestId]})
-      return delete this.Requests[params.requestId]
+      this.emit('ReceivedNonTextMessage', {type: 'ReceivedNonTextMessage', data: this.Requests[params.requestId]})
+      delete this.Requests[params.requestId]
     }
   }
 
@@ -162,10 +166,10 @@ class KCPipe {
       this.Requests[params.requestId].responseBody = response.body
     }
     if (this.debugOutput) console.log(`::SendingEvent:ReceivedTextMessage: \t${JSON.stringify(this.Requests[params.requestId])}`)
-    process.send({ type: 'ReceivedTextMessage',data:this.Requests[params.requestId]})
+    this.emit('ReceivedTextMessage', {type: 'ReceivedTextMessage', data: this.Requests[params.requestId]})
     delete this.Requests[params.requestId]
   }
 }
 
-new KCPipe()
-
+const chromePipe = new ChromePipe()
+export default chromePipe

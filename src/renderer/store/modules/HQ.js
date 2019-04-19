@@ -172,8 +172,8 @@ const getters = {
   deckShipIds: state => deckId => state.decks[deckId].ships,
   docks: state => state.docks,
   /* ship data for different templates in one place */
-  ship: state => shipId => state.ships.filter(ship => ship.api_id === shipId)[0],
-  gear: state => gearId => state.gears.filter(gear => gear.api_id === gearId)[0],
+  ship: state => shipId => state.ships.filter(ship => ship.api_id === shipId)[0] || {},
+  gear: state => gearId => state.gears.filter(gear => gear.api_id === gearId)[0] || {},
   shipData: state => shipId => getters.ship(state)(shipId),
   shipLvL: state => shipId => getters.shipData(state)(shipId).api_lv,
   shipMorale: state => shipId => getters.shipData(state)(shipId).api_cond,
