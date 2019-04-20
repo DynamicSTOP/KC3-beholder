@@ -6,7 +6,8 @@
 
 <script>
   import '@/sass/app.scss'
-
+  //
+  // updating through pure css will take up to 5% cpu...
   const images = [
     'https://cdn.awwni.me/u875.jpg',
     'https://pbs.twimg.com/media/D4HMLpGUEAAFdEG.jpg',
@@ -14,6 +15,16 @@
     'https://pbs.twimg.com/media/D4MJZSOXsAA34ag.jpg'
   ]
   const timePerImage = 10
+  let imageIndex = 0
+
+  function updateBg () {
+    document.body.parentNode.style = `--bg-img-path: url(${images[imageIndex]}) no-repeat;`
+    imageIndex++
+    if (imageIndex >= images.length) {
+      imageIndex = 0
+    }
+  }
+
   export default {
     name: 'kc3-beholder',
     mounted () {
@@ -21,25 +32,9 @@
       if (images.length === 0) {
         return
       } else if (images.length === 1) {
-        styleCss = 'html {\n' +
-          `  background: url(${images[0]}) no-repeat;\n` +
-          '  background-size: cover;\n' +
-          '}'
+        styleCss = `html { background: url(${images[0]}); background-size: cover;}`
       } else {
-        let style = '@keyframes htmlBG {\n'
-        style += images.map((url, index) => `${100 / images.length * index}% {background: url(${url}) no-repeat;background-size: cover;}\n` +
-          `${(100 / images.length * (index + 1)) - 0.001}%{background: url(${url}) no-repeat;\nbackground-size: cover;\n}`
-        ).join('\n')
-        style += '}\n'
-        style += 'html {\n' +
-          '  background-size: cover;\n' +
-          '  animation-name: htmlBG;\n' +
-          `  animation-duration: ${timePerImage * images.length}s;\n` +
-          '  animation-iteration-count: infinite;\n' +
-          '  animation-timing-function: linear;\n' +
-          '  animation-direction: alternate;\n' +
-          '}'
-        styleCss = style
+        styleCss = `html { background: var(--bg-img-path); background-size: cover; }`
       }
 
       let style = document.createElement('style')
@@ -47,6 +42,9 @@
       this.styleNode = style.childNodes[0]
       document.head.appendChild(style)
       this.styleNode.textContent = styleCss
+
+      setInterval(updateBg, timePerImage * 1000)
+      updateBg()
     }
 
   }
