@@ -8,7 +8,7 @@ if (localStorage.ssState) {
   try {
     Object.assign(state, JSON.parse(localStorage.ssState))
   } catch (e) {
-    console.error(e)
+    console.debug(e.toString())
   }
 }
 

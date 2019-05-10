@@ -9,10 +9,13 @@
   //
   // updating through pure css will take up to 5% cpu...
   const images = [
-    'https://cdn.awwni.me/u875.jpg',
+    'https://pbs.twimg.com/media/D4_GIeQUUAAjlEB.jpg',
     'https://pbs.twimg.com/media/D4HMLpGUEAAFdEG.jpg',
+    'https://pbs.twimg.com/media/D6NS6flU8AArfJi.jpg',
     'https://pbs.twimg.com/media/D2_DhC6U4AEvMai.jpg',
-    'https://pbs.twimg.com/media/D4MJZSOXsAA34ag.jpg'
+    'https://pbs.twimg.com/media/D4MJZSOXsAA34ag.jpg',
+    'https://pbs.twimg.com/media/D5TzPqaUUAEhQLV.jpg',
+    'https://pbs.twimg.com/media/D6JtD1HUYAAvmir.jpg'
   ]
   const timePerImage = 10
   let imageIndex = 0

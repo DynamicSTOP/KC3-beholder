@@ -13,6 +13,8 @@ const networkParser = {
       case '/kcsapi/api_get_member/questlist':
         // runs on quest list open
         // after quest check \ quest uncheck
+        store.dispatch('UI_SWITCH_PANEL', 'quests')
+        store.dispatch('PARSE_QUESTS_LIST', message.data)
         console.log(`parse quest list`)
         break
       case '/kcsapi/api_port/port':
@@ -69,12 +71,16 @@ const networkParser = {
         console.log(`parse dock return use item`)
         break
       case '/kcsapi/api_req_quest/clearitemget':
+        store.dispatch('QUEST_COMPLETE', message.data)
         console.log(`parse quest complete | item get`)
         break
       case '/kcsapi/api_req_quest/start':
+        // generally page will updated itself triggering /kcsapi/api_get_member/questlist
+        // so no need to dispatch anything
         console.log(`parse quest selected`)
         break
       case '/kcsapi/api_req_quest/stop':
+        store.dispatch('QUEST_UNSELECTED', message.data)
         console.log(`parse quest unselected`)
         break
       case '/kcsapi/api_req_nyukyo/start':

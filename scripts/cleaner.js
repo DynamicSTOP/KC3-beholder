@@ -8,19 +8,21 @@
  *  in the end it will remove need of doing 100500 unnecessary requests
  */
 
-const fs = require('fs'), https = require('https')
+const fs = require('fs'), https = require('https'), path = require('path')
 require('dotenv').config()
 console.log('============================')
 console.log('===== cleaner.js START =====')
 console.log('============================')
 let versions = {
   WCTF: '',
-  WCTF_date: ''
+  WCTF_date: '',
+  poooi: '',
+  poooi_date: ''
 }
 let update = false
 try {
-  fs.accessSync(__dirname + '/../external/.versions.json', fs.constants.R_OK)
-  versions = JSON.parse(fs.readFileSync(__dirname + '/../external/.versions.json'))
+  fs.accessSync(path.join(__dirname, '..', 'external', '.versions.json'), fs.constants.R_OK)
+  versions = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'external', '.versions.json')))
 } catch (e) {
 }
 
@@ -92,17 +94,43 @@ load('/repos/KC3Kai/KC3Kai/commits?sha=master&path=src/assets/img/ships/')
     }
     if (force || versions.WCTF !== WCTFdata[0].sha) {
       console.log(`Dropping WCTF db`)
-      fs.readdirSync(__dirname + '/../external')
+      fs.readdirSync(path.join(__dirname, '..', 'external'))
         .filter((s) => s.indexOf('nedb') !== -1)
         .map((s) => {
-          fs.unlinkSync(__dirname + '/../external/' + s)
+          fs.unlinkSync(path.join(__dirname, '..', 'external', s))
         })
       versions.WCTF = force ? '' : WCTFdata[0].sha
       versions.WCTF_date = force ? '' : WCTFdata[0].commit.author.date
       update = true
     }
+  })
+  .then(() => load('/repos/poooi/plugin-quest/commits?sha=master&path=/assets/data.json'))
+  .then((POOOIdata) => {
+    let force = false
+    try {
+      console.log(`POOOI version ${POOOIdata[0].sha}`)
+    } catch (e) {
+      force = true
+      console.log(`can't read version from ${JSON.stringify(POOOIdata)}`)
+    }
+    if (force || versions.poooi !== POOOIdata[0].sha) {
+      console.log(`Dropping POOOI quests`)
+      let stat
+      try {
+        fs.statSync(path.join(__dirname, '..', 'external', 'poooi_quests.json'))
+      } catch (e) {
+        console.log('poooi quests doesn\'t exist')
+      }
+      if (stat) {
+        fs.unlinkSync(path.join(__dirname, '..', 'external', 'poooi_quests.json'))
+      }
+
+      versions.poooi = force ? '' : POOOIdata[0].sha
+      versions.poooi_date = force ? '' : POOOIdata[0].commit.author.date
+      update = true
+    }
   }).then(() => {
-  if (update) fs.writeFileSync(__dirname + '/../external/.versions.json', JSON.stringify(versions), {encoding: 'utf8'})
+  if (update) fs.writeFileSync(path.join(__dirname, '..', 'external', '.versions.json'), JSON.stringify(versions), {encoding: 'utf8'})
   console.log('============================')
   console.log('===== cleaner.js END =======')
   console.log('============================')

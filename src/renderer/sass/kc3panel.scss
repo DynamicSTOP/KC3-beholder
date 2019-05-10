@@ -506,3 +506,10 @@
   flex: 1;
   background: rgba(0, 0, 0, 0.2);
 }
+
+.quests_panel {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 1px #000, 0 -1px 1px #000, 1px 0 1px #000, -1px 0 1px #000;
+  color:white;
+}

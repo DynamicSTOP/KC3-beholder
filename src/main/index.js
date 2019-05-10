@@ -39,8 +39,9 @@ chromePipe.on('ReceivedTextMessage', (message) => {
       if (match === null) {
         return console.error('ERROR MATCHING URL ' + url + ' ' + JSON.stringify(message))
       }
-      fs.writeFileSync(path.join(__dirname, '..', 'tmp',
-        match[1].substring(1).replace(/\//g, '-') + '.json'),
+      fs.writeFileSync(
+        path.join(__dirname, '..', '..', 'tmp',
+          match[1].substring(1).replace(/\//g, '-') + '.json'),
         JSON.stringify(message, false, ' '), {encoding: 'utf8'})
     }
   }

@@ -39,7 +39,7 @@ if (localStorage.hqState) {
   try {
     Object.assign(state, JSON.parse(localStorage.hqState))
   } catch (e) {
-    console.error(e)
+    console.debug(e.toString())
   }
 }
 
