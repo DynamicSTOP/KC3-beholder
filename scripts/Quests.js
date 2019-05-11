@@ -5,6 +5,18 @@ console.log('=======================================')
 console.log('===== WhoCallsTheFleetDb.js START =====')
 console.log('=======================================')
 
+const checkDir = (fpath = '') => {
+  console.log(`checking ${fpath}`)
+  if (fpath.length === 0 || fpath === '.' || fpath === '/') {
+    return
+  }
+  if (!fs.existsSync(path.dirname(fpath))) {
+    checkDir(path.dirname(fpath))
+    console.log(`adding dir ${path.dirname(fpath)}`)
+    fs.mkdirSync(path.dirname(fpath))
+  }
+}
+
 let check = async (url, path) => {
   return new Promise((res) => {
     try {
@@ -21,6 +33,7 @@ let check = async (url, path) => {
         })
         response.on('end', () => {
           data = data.trim()
+          checkDir(path)
           fs.writeFileSync(path, data)
           console.log(`Finished ${path} length -> ${data.length}`)
           res()
@@ -30,7 +43,8 @@ let check = async (url, path) => {
   })
 }
 
-check('https://raw.githubusercontent.com/poooi/plugin-quest/master/assets/data.json', path.join(__dirname, '..', 'external', 'poooi_quests.json'))
+check('https://raw.githubusercontent.com/poooi/plugin-quest/master/assets/data.json', path.join(__dirname, '..', 'external', 'POOOI', 'poooi_quests.json'))
+  .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/quests.json', path.join(__dirname, '..', 'external', 'KC3T', 'quests.json')))
   .then(() => {
     console.log('processing...')
     let quests = {}

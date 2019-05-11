@@ -10,6 +10,34 @@
 
 const fs = require('fs'), https = require('https'), path = require('path')
 require('dotenv').config()
+
+const deleteRecursive = (fpath = '') => {
+  console.log(`dropping ${fpath}`)
+  if (fpath.length === 0 || fpath === '.' || fpath === '/') {
+    return
+  }
+  let dontRmDir = false
+  if (fs.existsSync(fpath)) {
+    if (fs.lstatSync(fpath).isDirectory()) {
+      fs.readdirSync(fpath).forEach(function (file, index) {
+        if (deleteRecursive(path.join(fpath, file))) {
+          dontRmDir = true
+        }
+      })
+      if (!dontRmDir) {
+        // fs.rmdirSync(path)  
+      }
+    } else {
+      if (fpath.indexOf('.gitignore') === -1) {
+        // fs.unlinkSync(path)
+      } else {
+        dontRmDir = true
+      }
+    }
+  }
+  return dontRmDir
+}
+
 console.log('============================')
 console.log('===== cleaner.js START =====')
 console.log('============================')
@@ -17,7 +45,9 @@ let versions = {
   WCTF: '',
   WCTF_date: '',
   poooi: '',
-  poooi_date: ''
+  poooi_date: '',
+  KC3T: '',
+  KC3T_date: ''
 }
 let update = false
 try {
@@ -62,26 +92,22 @@ let load = async (path) => {
 }
 
 //https://developer.github.com/v3/repos/commits/
-load('/repos/KC3Kai/KC3Kai/commits?sha=master&path=src/assets/img/ships/')
-  .then((KC3data) => {
+load('/repos/KC3Kai/kc3-translations/commits?sha=master&path=data/')
+  .then((KC3Tdata) => {
     let force = false
     try {
-      console.log(`KC3 images version ${KC3data[0].sha}`)
+      console.log(`KC3 translation version ${KC3Tdata[0].sha}`)
     } catch (e) {
       force = true
-      console.log(`can't read version from ${JSON.stringify(KC3data)}`)
+      console.log(`can't read version from ${JSON.stringify(KC3Tdata)}`)
     }
-    // if (force || versions.KC3 !== KC3data[0].sha) {
-    //   console.log(`Dropping avatars`)
-    //   fs.readdirSync(__dirname + '/../src/images/ships')
-    //     .filter((s) => s.indexOf('png') !== -1)
-    //     .map((s) => {
-    //       fs.unlinkSync(__dirname + '/../src/images/ships/' + s)
-    //     })
-    //   versions.KC3 = force ? '' : KC3data[0].sha
-    //   versions.KC3_date = force ? '' : KC3data[0].commit.author.date
-    //   update = true
-    // }
+    if (force || versions.KC3T !== KC3Tdata[0].sha) {
+      console.log(`Dropping translations`)
+      deleteRecursive(path.join(__dirname, '..', 'external', 'KC3T'))
+      versions.KC3T = force ? '' : KC3Tdata[0].sha
+      versions.KC3T_date = force ? '' : KC3Tdata[0].commit.author.date
+      update = true
+    }
   })
   .then(() => load('/repos/TeamFleet/WhoCallsTheFleet/commits?sha=master&path=app-db/'))
   .then((WCTFdata) => {
@@ -94,11 +120,7 @@ load('/repos/KC3Kai/KC3Kai/commits?sha=master&path=src/assets/img/ships/')
     }
     if (force || versions.WCTF !== WCTFdata[0].sha) {
       console.log(`Dropping WCTF db`)
-      fs.readdirSync(path.join(__dirname, '..', 'external'))
-        .filter((s) => s.indexOf('nedb') !== -1)
-        .map((s) => {
-          fs.unlinkSync(path.join(__dirname, '..', 'external', s))
-        })
+      deleteRecursive(path.join(__dirname, '..', 'external', 'WCTF'))
       versions.WCTF = force ? '' : WCTFdata[0].sha
       versions.WCTF_date = force ? '' : WCTFdata[0].commit.author.date
       update = true
@@ -115,16 +137,7 @@ load('/repos/KC3Kai/KC3Kai/commits?sha=master&path=src/assets/img/ships/')
     }
     if (force || versions.poooi !== POOOIdata[0].sha) {
       console.log(`Dropping POOOI quests`)
-      let stat
-      try {
-        fs.statSync(path.join(__dirname, '..', 'external', 'poooi_quests.json'))
-      } catch (e) {
-        console.log('poooi quests doesn\'t exist')
-      }
-      if (stat) {
-        fs.unlinkSync(path.join(__dirname, '..', 'external', 'poooi_quests.json'))
-      }
-
+      deleteRecursive(path.join(__dirname, '..', 'external', 'POOOI'))
       versions.poooi = force ? '' : POOOIdata[0].sha
       versions.poooi_date = force ? '' : POOOIdata[0].commit.author.date
       update = true
