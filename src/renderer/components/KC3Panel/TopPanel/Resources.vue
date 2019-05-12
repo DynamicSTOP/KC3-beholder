@@ -11,7 +11,7 @@
         </div>
         <div class="resources--line">
             <div><img src="~@/assets/img/ui/ammo.png">{{ hqAmmo || "X" }}</div>
-            <div><img src="~@/assets/img/ui/baux.png">{{ hqBaux || "X" }}</div>
+            <div><img src="~@/assets/img/ui/bauxite.png">{{ hqBauxite || "X" }}</div>
         </div>
     </div>
 </template>
@@ -21,7 +21,7 @@
   export default {
     name: 'Resources',
     computed: {
-      ...mapGetters(['hqBuckets', 'hqFuel', 'hqSteel', 'hqBaux', 'hqAmmo',
+      ...mapGetters(['hqBuckets', 'hqFuel', 'hqSteel', 'hqBauxite', 'hqAmmo',
         'shipCount', 'hqMaxShips', 'hqMaxGears', 'gearCount'])
     }
   }

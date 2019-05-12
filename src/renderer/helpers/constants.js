@@ -1,0 +1,24 @@
+export default Object.freeze({
+  // according to poooi quests json
+  QUEST_CATEGORY_COMPOSITION: 1,
+  QUEST_CATEGORY_BATTLE: 2,
+  QUEST_CATEGORY_PVP: 3,
+  QUEST_CATEGORY_EXPEDITION: 4,
+  QUEST_CATEGORY_SUPPLY: 5,
+  QUEST_CATEGORY_CONSTRUCT: 6,
+  QUEST_CATEGORY_MODERNIZATION: 7,
+
+  QUEST_REPEAT_ONCE: 1,
+  QUEST_REPEAT_DAILY: 2,
+  QUEST_REPEAT_WEEKLY: 3,
+  // 370 - available on dates ending with -3rd, -7th, or -0th.
+  QUEST_REPEAT_370: 4,
+  // 28 - available on dates ending with -2rd, or -8th.
+  QUEST_REPEAT_28: 5,
+  QUEST_REPEAT_MONTHLY: 6,
+  QUEST_REPEAT_QUARTERLY: 7,
+
+  QUEST_STATUS_AVAILABLE: 1,
+  QUEST_STATUS_ACTIVE: 2,
+  QUEST_STATUS_COMPLETE: 3
+})

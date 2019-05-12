@@ -25,7 +25,7 @@ const state = {
       fuel: 0,
       ammo: 0,
       steel: 0,
-      baux: 0,
+      bauxite: 0,
       buckets: 0
     }
   },
@@ -107,7 +107,7 @@ const mutations = {
     state.hq.materials.fuel = api_material.filter(r => r.api_id === 1)[0].api_value
     state.hq.materials.ammo = api_material.filter(r => r.api_id === 2)[0].api_value
     state.hq.materials.steel = api_material.filter(r => r.api_id === 3)[0].api_value
-    state.hq.materials.baux = api_material.filter(r => r.api_id === 4)[0].api_value
+    state.hq.materials.bauxite = api_material.filter(r => r.api_id === 4)[0].api_value
     state.hq.materials.buckets = api_material.filter(r => r.api_id === 6)[0].api_value
 
     state.ships = api_ship
@@ -165,7 +165,7 @@ const getters = {
   hqFuel: state => state.hq.materials.fuel,
   hqAmmo: state => state.hq.materials.ammo,
   hqSteel: state => state.hq.materials.steel,
-  hqBaux: state => state.hq.materials.baux,
+  hqBauxite: state => state.hq.materials.bauxite,
   hqBuckets: state => state.hq.materials.buckets,
   shipCount: state => state.ships.length,
   gearCount: state => state.gears.length,

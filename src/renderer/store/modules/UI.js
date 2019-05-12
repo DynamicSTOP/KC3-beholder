@@ -1,7 +1,8 @@
 const state = {
   uiCensor: false,
   uiCurrentPanel: 'fleet',
-  uiCurrentFleet: 0
+  uiCurrentFleet: 0,
+  uiCurrentQuestFilter: 'current'
 }
 
 if (localStorage.uiState) {
@@ -28,6 +29,10 @@ const mutations = {
   UI_SWITCH_FLEET (state, fleetId) {
     state.uiCurrentFleet = fleetId
     saveToLocalStorage()
+  },
+  UI_SWITCH_CURRENT_QUEST_FILTER (state, filter) {
+    state.uiCurrentQuestFilter = filter
+    saveToLocalStorage()
   }
 }
 
@@ -40,13 +45,17 @@ const actions = {
   },
   UI_SWITCH_FLEET (context, fleetId) {
     context.commit('UI_SWITCH_FLEET', fleetId)
+  },
+  UI_SWITCH_CURRENT_QUEST_FILTER (context, filter) {
+    context.commit('UI_SWITCH_CURRENT_QUEST_FILTER', filter)
   }
 }
 
 const getters = {
   uiCensor: state => state.uiCensor,
   uiCurrentPanel: state => state.uiCurrentPanel,
-  uiCurrentFleet: state => state.uiCurrentFleet
+  uiCurrentFleet: state => state.uiCurrentFleet,
+  uiCurrentQuestFilter: state => state.uiCurrentQuestFilter
 }
 
 export default {

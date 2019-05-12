@@ -39,7 +39,7 @@
     computed: {
       ...mapGetters(['shipExpReady', 'shipIsInDock', 'shipHpCurrent', 'shipHpMax', 'shipMasterId', 'shipLvL', 'shipLvLCss', 'shipName', 'shipData']),
       shipImageSrc () {
-        if (Math.ceil(this.shipHpCurrent(this.shipId) / this.shipHpMax(this.shipId) / 0.25) > 1) {
+        if (Math.ceil(this.shipHpCurrent(this.shipId) / this.shipHpMax(this.shipId) / 0.25) > 2) {
           return require(`@/assets/img/ships/${this.shipMasterId(this.shipId)}.png`)
         } else {
           return require(`@/assets/img/ships/${this.shipMasterId(this.shipId)}_d.png`)

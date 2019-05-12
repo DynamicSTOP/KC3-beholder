@@ -48,8 +48,8 @@ check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
   .then(() => check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ship_types.nedb', path.join(__dirname, '..', 'external', 'WCTF', 'ship_types.nedb')))
   .then(() => check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ship_namesuffix.nedb', path.join(__dirname, '..', 'external', 'WCTF', 'ship_namesuffix.nedb')))
   .then(() => check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/items.nedb', path.join(__dirname, '..', 'external', 'WCTF', 'items.nedb')))
-  .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/items.json', path.join(__dirname, '..', 'external', 'KC3T', 'items.json')))
-  .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/equiptype.json', path.join(__dirname, '..', 'external', 'KC3T', 'equiptype.json')))
+  .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/items.json', path.join(__dirname, '..', 'external', 'KC3T', 'en', 'items.json')))
+  .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/equiptype.json', path.join(__dirname, '..', 'external', 'KC3T', 'en', 'equiptype.json')))
 
   .then(() => {
     console.log(`Processing...`)
@@ -145,8 +145,13 @@ check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
 
     fs.writeFileSync(path.join(__dirname, '..', 'src', 'renderer', 'generated', 'ships.js'), str, {encoding: 'utf8'})
 
+    str = '/* eslint-disable */\n'
+    str += 'const ships=' + JSON.stringify(obj, false, ' ') + '\n'
+    str += 'module.exports = ships'
+    fs.writeFileSync(path.join(__dirname, '..', 'external', 'WCTF', 'ships.js'), str, {encoding: 'utf8'})
+
     let items = {}
-    let itemTranslations = fs.readFileSync(path.join(__dirname, '..', 'external', 'KC3T', 'items.json'), 'utf8')
+    let itemTranslations = fs.readFileSync(path.join(__dirname, '..', 'external', 'KC3T', 'en', 'items.json'), 'utf8')
     itemTranslations = JSON.parse(itemTranslations)
 
     const rawItems = fs.readFileSync(path.join(__dirname, '..', 'external', 'WCTF', 'items.nedb'), 'utf8')
@@ -179,7 +184,19 @@ check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
     str += 'export default items'
     fs.writeFileSync(path.join(__dirname, '..', 'src', 'renderer', 'generated', 'items.js'), str, {encoding: 'utf8'})
 
-    let itemTypeNames = fs.readFileSync(path.join(__dirname, '..', 'external', 'KC3T', 'equiptype.json'), 'utf8')
+    // for quests parsing
+    rawItems.split('\n').map((rawItem) => {
+      rawItem = JSON.parse(rawItem)
+      items[`${rawItem.id}`] = {
+        name: rawItem.name.ja_jp.trim(),
+      }
+    })
+    str = '/* eslint-disable */\n'
+    str += 'const items=' + JSON.stringify(items, false, ' ') + '\n'
+    str += 'module.exports = items'
+    fs.writeFileSync(path.join(__dirname, '..', 'external', 'WCTF', 'items.js'), str, {encoding: 'utf8'})
+
+    let itemTypeNames = fs.readFileSync(path.join(__dirname, '..', 'external', 'KC3T', 'en', 'equiptype.json'), 'utf8')
     itemTypeNames = JSON.parse(itemTypeNames)
     str = '/* eslint-disable */\n'
     str += 'const itemTypes=' + JSON.stringify(itemTypeNames) + '\n'

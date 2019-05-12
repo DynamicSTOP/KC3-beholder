@@ -25,11 +25,13 @@ const deleteRecursive = (fpath = '') => {
         }
       })
       if (!dontRmDir) {
-        // fs.rmdirSync(path)  
+        console.log(`removing dir ${fpath}`)
+        fs.rmdirSync(fpath)  
       }
     } else {
       if (fpath.indexOf('.gitignore') === -1) {
-        // fs.unlinkSync(path)
+        console.log(`removing file ${fpath}`)
+        fs.unlinkSync(fpath)
       } else {
         dontRmDir = true
       }

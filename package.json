@@ -21,7 +21,7 @@
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "postinstall": "npm run lint:fix",
-    "generateData": "node scripts/cleaner.js && node scripts/WhoCallsTheFleetDb.js"
+    "generateData": "node scripts/cleaner.js && node scripts/WhoCallsTheFleetDb.js && node scripts/Quests.js"
   },
   "build": {
     "productName": "kc3-beholder",
