@@ -219,8 +219,7 @@ check('https://raw.githubusercontent.com/poooi/plugin-quest/master/assets/data.j
       if (quest.reward_bauxite > 0) {
         quests[quest.game_id].rewards.rsc.bauxite = quest.reward_bauxite
       }
-
-      // FIXME need to parse (like medals i guess...)
+      
       if (quest.reward_other) {
         const other = []
 
