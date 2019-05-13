@@ -133,6 +133,12 @@ class ChromePipe extends EventEmitter {
       return
     }
     this.Requests[params.requestId].mimeType = params.response.mimeType
+    const headers = {}
+    // only need server date for quests and may be better exp prediction
+    Object.keys(params.response.headers)
+      .filter((k) => k.toLowerCase() === 'date')
+      .map((k) => { headers[k.toLowerCase()] = params.response.headers[k] })
+    this.Requests[params.requestId].headers = headers
     if (params.response.mimeType.indexOf('text') === -1) {
       if (this.debugOutput) console.log(`::SendingEvent:ReceivedNonTextMessage: \t${JSON.stringify(this.Requests[params.requestId])}`)
       this.emit('ReceivedNonTextMessage', {type: 'ReceivedNonTextMessage', data: this.Requests[params.requestId]})

@@ -15,25 +15,25 @@
             <div @click="switchFilter('once')" :class="{active:uiCurrentQuestFilter==='once'}" title="Once">O</div>
         </div>
         <div class="quests_panel--quests" :class="{active:uiCurrentQuestFilter==='current'}">
-            <quest v-for="(quest,index) in questsActive" :key="'quest_c'+index" :quest="quest"></quest>
+            <quest v-for="(quest) in questsActive" :key="'quest_c'+quest.api_no" :quest="quest"></quest>
         </div>
         <div class="quests_panel--quests" :class="{active:uiCurrentQuestFilter==='all'}">
-            <quest v-for="(quest,index) in questsAll" :key="'quest_a'+index" :quest="quest"></quest>
+            <quest v-for="(quest) in questsAll" :key="'quest_a'+quest.api_no" :quest="quest"></quest>
         </div>
         <div class="quests_panel--quests" :class="{active:uiCurrentQuestFilter==='daily'}">
-            <quest v-for="(quest,index) in questsDaily" :key="'quest_d'+index" :quest="quest"></quest>
+            <quest v-for="(quest) in questsDaily" :key="'quest_d'+quest.api_no" :quest="quest"></quest>
         </div>
         <div class="quests_panel--quests" :class="{active:uiCurrentQuestFilter==='weekly'}">
-            <quest v-for="(quest,index) in questsWeekly" :key="'quest_w'+index" :quest="quest"></quest>
+            <quest v-for="(quest) in questsWeekly" :key="'quest_w'+quest.api_no" :quest="quest"></quest>
         </div>
         <div class="quests_panel--quests" :class="{active:uiCurrentQuestFilter==='monthly'}">
-            <quest v-for="(quest,index) in questsMonthly" :key="'quest_m'+index" :quest="quest"></quest>
+            <quest v-for="(quest) in questsMonthly" :key="'quest_m'+quest.api_no" :quest="quest"></quest>
         </div>
         <div class="quests_panel--quests" :class="{active:uiCurrentQuestFilter==='quarterly'}">
-            <quest v-for="(quest,index) in questsQuarterly" :key="'quest_q'+index" :quest="quest"></quest>
+            <quest v-for="(quest) in questsQuarterly" :key="'quest_q'+quest.api_no" :quest="quest"></quest>
         </div>
         <div class="quests_panel--quests" :class="{active:uiCurrentQuestFilter==='once'}">
-            <quest v-for="(quest,index) in questsOnce" :key="'quest_o'+index" :quest="quest"></quest>
+            <quest v-for="(quest) in questsOnce" :key="'quest_o'+quest.api_no" :quest="quest"></quest>
         </div>
     </div>
 </template>
