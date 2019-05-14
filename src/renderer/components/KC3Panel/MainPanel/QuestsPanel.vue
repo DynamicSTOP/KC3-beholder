@@ -45,6 +45,9 @@
   export default {
     name: 'QuestsPanel',
     components: {Quest},
+    mounted () {
+      this.$store.dispatch('QUEST_UPDATE_TIMERS')
+    },
     computed: {
       ...mapGetters(['questsActive', 'questsAll', 'questsDaily', 'questsWeekly', 'questsMonthly', 'questsQuarterly',
         'questsOnce', 'questsAvailable', 'questsComplete', 'uiCurrentQuestFilter'])
