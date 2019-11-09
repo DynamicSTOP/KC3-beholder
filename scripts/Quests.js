@@ -130,7 +130,7 @@ const parseReward = (reward, quest) => {
     return {LSC: true}
   } else if (name === '改修工廠開放') {//akashi repair shop
     return {akashi_repair_shop: true}
-  } else if (name.indexOf('★') !== 0) {
+  } else if (name.indexOf('★') !== -1) {
     const itemName = name.replace(/★.+$/g, '')
     const itemLvl = name.match(/\+(\d+)/g)[1]
 

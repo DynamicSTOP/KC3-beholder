@@ -49,6 +49,7 @@ check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
   .then(() => check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ship_namesuffix.nedb', path.join(__dirname, '..', 'external', 'WCTF', 'ship_namesuffix.nedb')))
   .then(() => check('https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/items.nedb', path.join(__dirname, '..', 'external', 'WCTF', 'items.nedb')))
   .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/items.json', path.join(__dirname, '..', 'external', 'KC3T', 'en', 'items.json')))
+  .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/jp/useitems.json', path.join(__dirname, '..', 'external', 'KC3T', 'jp', 'useitems.json')))
   .then(() => check('https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/equiptype.json', path.join(__dirname, '..', 'external', 'KC3T', 'en', 'equiptype.json')))
 
   .then(() => {
